@@ -104,7 +104,9 @@ public class User implements Serializable {
 		todos.add(todo);
 	}
 	
-	
+	public void deleteAllToDos() {
+		todos.clear();
+	}
 	
 	
 	

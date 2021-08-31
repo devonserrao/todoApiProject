@@ -135,6 +135,54 @@ public class UserController {
 								.body("Couldnt find user with id = " + id + " to add a ToDo for.");
 	}
 	
+	/* 
+	 * Delete all todos for a single user
+	 * 			- Issue: Passes but doesnt actually delete from db!
+	 * */
+	@PutMapping("/user/{id}/empty")
+	public ResponseEntity<?> addToDoForUser(@PathVariable int id) {
+		
+		Optional<User> found = repo.findById(id);
+		
+		if(found.isPresent()) {
+			User toRemoveToDos = found.get();
+			List<ToDo> toDosToClear = toRemoveToDos.getTodos();
+			
+			for(int i = 0; i < toDosToClear.size(); i++ ) {
+				toDoRepo.deleteById(toDosToClear.get(i).getId());				
+			}
+				
+			toRemoveToDos.deleteAllToDos();
+			
+			User updated = repo.save(toRemoveToDos);
+			return ResponseEntity.status(200).body(updated);
+		}
+		
+		return ResponseEntity.status(404)
+								.body("Couldnt find user with id = " + id + " to remove all ToDos.");
+	}
 	
+	// Sets Finished = true for all todos with user_id = id
+	@PutMapping("/user/{id}/finish")
+	public ResponseEntity<?> finishAllToDoForUser(@PathVariable int id) {
+		
+		Optional<User> found = repo.findById(id);
+		
+		if(found.isPresent()) {
+			User toUpdate = found.get();
+			List<ToDo> toDosToUpdate = toUpdate.getTodos();
+			
+			for(int i = 0; i < toDosToUpdate.size(); i++) {
+				ToDo todoOfUser = toDoRepo.getById(toDosToUpdate.get(i).getId());
+				todoOfUser.setFinished(true);
+			}
+			
+			User updated = repo.save(toUpdate);
+			return ResponseEntity.status(200).body(updated);
+		}
+		
+		return ResponseEntity.status(404)
+								.body("Couldnt find user with id = " + id + " to add a ToDo for.");
+	}
 	
 }

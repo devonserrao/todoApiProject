@@ -41,7 +41,7 @@ public class ToDoController {
 			deleted = repo.getById(id);
 			repo.deleteById(id);
 			
-			System.out.println(deleted.getDueDate());
+//			System.out.println(deleted.getDueDate());
 		}
 		
 		if(deleted.getId() == -1) {
@@ -106,6 +106,13 @@ public class ToDoController {
 //								.body("ToDo with id = " + id + "not found and cannot update DueDate!");
 //		
 //	}
+	
+//	@DeleteMapping("/todo/{userid}")
+//	public ResponseEntity<?> deleteToDosOfUser(@PathVariable int userid) {
+//		// Plan to use the ToDoRepository -> deleteToDosOfUser(int userId) 
+//		//			to remove all todos having user_id = userid
+//	}
+	
 	
 	
 }

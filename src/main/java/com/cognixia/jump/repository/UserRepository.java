@@ -12,4 +12,10 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 	@Query("select u from User u where u.username = ?1 and u.password = ?2")
 	User loginUser(String username, String password);
 	
+	/*
+	 * Want to use this Custom query for delete all todos of user but doesnt work
+	 * */
+//	@Query("delete from to_do t where t.user_id = ?")
+//	void deleteToDosOfUser(int userId);
+	
 }
