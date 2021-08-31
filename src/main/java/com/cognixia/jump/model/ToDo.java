@@ -1,6 +1,7 @@
 package com.cognixia.jump.model;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -30,6 +31,9 @@ public class ToDo implements Serializable {
 	
 	@NotNull
 	private Boolean finished;
+	
+	@NotNull
+	private LocalDate dueDate;
 	
 	@ManyToOne
 	@JoinColumn(name = "user_id", referencedColumnName = "id")
@@ -70,6 +74,14 @@ public class ToDo implements Serializable {
 		this.finished = finished;
 	}
 
+	public LocalDate getDueDate() {
+		return dueDate;
+	}
+
+	public void setDueDate(LocalDate dueDate) {
+		this.dueDate = dueDate;
+	}
+
 	// Only need Setter for the Users
 	public void setUser(User user) {
 		this.user = user;
@@ -77,7 +89,7 @@ public class ToDo implements Serializable {
 
 	@Override
 	public String toString() {
-		return "ToDo [id=" + id + ", description=" + description + ", finished=" + finished + ", user=" + user + "]";
+		return "ToDo [id=" + id + ", description=" + description + ", finished=" + finished + ", dueDate = " + dueDate + " , user=" + user + "]";
 	}
 	
 	
