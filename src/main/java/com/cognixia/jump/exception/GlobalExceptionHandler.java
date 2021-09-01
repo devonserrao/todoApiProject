@@ -20,4 +20,15 @@ public class GlobalExceptionHandler {
 		// constructing the response
 		return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
 	}
+	
+	// Need to add in exception handler for UserLoginFailedException!
+	@ExceptionHandler(UserLoginFailedException.class)
+	public ResponseEntity<?> resourceNotFound(UserLoginFailedException ex, WebRequest request) {
+		
+		// what data will be returned back in response when Exception is thrown
+		ErrorDetails errorDetails = new ErrorDetails(new Date(), ex.getMessage(), request.getDescription(false));
+		
+		// constructing the response
+		return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
+	}
 }

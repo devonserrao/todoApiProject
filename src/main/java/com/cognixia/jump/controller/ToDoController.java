@@ -2,6 +2,7 @@ package com.cognixia.jump.controller;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import javax.websocket.server.PathParam;
@@ -86,26 +87,28 @@ public class ToDoController {
 	}
 	
 	// Update a todo's Due Date ---> Causing issues not working
-//	@PatchMapping("/todo/{id}/duedate/{duedate}")
-//	public ResponseEntity<?> updateDueDate(@PathVariable int id, @PathVariable String date) {
-//		
-//		Optional<ToDo> found = repo.findById(id);
-//		
-//		if(found.isPresent()) {
-//			ToDo toUpdateDueDate = found.get();
-//			LocalDate newDueDate = LocalDate.parse(date);
-//			
-//			toUpdateDueDate.setDueDate(newDueDate);
-//			
-//			ToDo updated = repo.save(toUpdateDueDate);
-//			return ResponseEntity.status(200).body(updated);			
-//		}
-//		
-//		
-//		return ResponseEntity.status(404)
-//								.body("ToDo with id = " + id + "not found and cannot update DueDate!");
-//		
-//	}
+	@PatchMapping("/todo/duedate")
+	public ResponseEntity<?> updateDueDate(@RequestBody Map<String, String> data) {
+		
+		int id = Integer.parseInt(data.get("id"));
+		LocalDate dueDate = LocalDate.parse(data.get("dueDate"));
+				
+		Optional<ToDo> found = repo.findById(id);
+		
+		if(found.isPresent()) {
+			ToDo toUpdateDueDate = found.get();
+						
+			toUpdateDueDate.setDueDate(dueDate);
+			
+			ToDo updated = repo.save(toUpdateDueDate);
+			return ResponseEntity.status(200).body(updated);			
+		}
+		
+		
+		return ResponseEntity.status(404)
+								.body("ToDo with id = " + id + "not found and cannot update DueDate!");
+		
+	}
 	
 //	@DeleteMapping("/todo/{userid}")
 //	public ResponseEntity<?> deleteToDosOfUser(@PathVariable int userid) {

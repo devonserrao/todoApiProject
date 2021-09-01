@@ -64,36 +64,37 @@ public class UserController {
 	}
 	
 	
-	// Issue with updating username & password!
-//	@PatchMapping("user/username")
-//	public ResponseEntity<?> updateUsername(@PathParam(value = "id") int id, @PathParam(value = "username") String username) {
-//		
-//		Optional<User> found = repo.findById(id);
-//		User toUpdate, updated;
-//		
-//		if(found.isPresent()) {
-//			toUpdate = found.get();
-//			toUpdate.setUsername(username);
-//			
-//			updated = repo.save(toUpdate);
-//			
-//		}
-//		else
-//			updated = new User();
-//		
-//		if(updated.getId() == -1) {
-//			return ResponseEntity.status(404)
-//									.body("User with id = " + id + " couldnt be found to update the username!");
-//		}
-//		
-//		return ResponseEntity.status(200).body(updated);
-//	}
+	@PatchMapping("user/username")
+	public ResponseEntity<?> updateUsername(@PathParam(value = "id") int id, @PathParam(value = "username") String username) {
+		
+		Optional<User> found = repo.findById(id);
+		User toUpdate, updated;
+		
+		if(found.isPresent()) {
+			repo.updateUsername(id, username);
+			return ResponseEntity.status(200).body("User of id = " + id + " USERNAME was updated!");
+			
+		}
+		else
+			return ResponseEntity.status(404)
+					.body("User with id = " + id + " couldnt be found to update the username!");
+
+	}
 	
 	
-	// This might have updated the ToDo table by accident 
 	@PostMapping("/user")
 	public ResponseEntity<?> addUser(@Valid @RequestBody User user) {
 		user.setId(-1);
+		
+		// Ensure each ToDo attached to the new User 
+		//			-> makes a new ToDo instead of accidentally stealing an existing ToDo from a User
+		// 				Eg: (User has todo_id = 1 ==> But todo_id = 1 already exists for another user 
+		//							===> will delete from old user and add to new one instead)
+		// 	To fix the issue:
+		//			==> setId for each ToDo to -1 while inserting new User
+		for(ToDo todo : user.getTodos()) {
+			todo.setId(-1);
+		}
 		
 		User added = repo.save(user);
 		return ResponseEntity.status(201).body(added);
