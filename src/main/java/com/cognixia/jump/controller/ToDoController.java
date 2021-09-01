@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cognixia.jump.model.ToDo;
+import com.cognixia.jump.model.User;
 import com.cognixia.jump.repository.ToDoRepository;
 
 @RequestMapping("/api")
@@ -113,11 +114,17 @@ public class ToDoController {
 		
 	}
 	
-//	@DeleteMapping("/todo/{userid}")
-//	public ResponseEntity<?> deleteToDosOfUser(@PathVariable int userid) {
-//		// Plan to use the ToDoRepository -> deleteToDosOfUser(int userId) 
-//		//			to remove all todos having user_id = userid
-//	}
+	/*
+	 *  API call to delete all ToDos of a User
+	 *  	==> Need to pass a User object in the Request Body
+	 *  	==> Can try passing just user id in the URL instead
+	 */
+	@DeleteMapping("/todo/user")
+	public ResponseEntity<?> deleteToDosOfUser(@RequestBody User user) {
+		repo.removeByUser(user);
+		
+		return ResponseEntity.status(200).body("Todos of User with id = " + user.getId() + " was DELETED!");
+	}
 	
 	
 	

@@ -171,28 +171,28 @@ public class UserController {
 	 * 			  # May need to comment this out!!! #
 	 * 			  ###################################
 	 * */
-	@PutMapping("/user/{id}/empty")
-	public ResponseEntity<?> addToDoForUser(@PathVariable int id) {
-		
-		Optional<User> found = repo.findById(id);
-		
-		if(found.isPresent()) {
-			User toRemoveToDos = found.get();
-			List<ToDo> toDosToClear = toRemoveToDos.getTodos();
-			
-			for(int i = 0; i < toDosToClear.size(); i++ ) {
-				toDoRepo.deleteById(toDosToClear.get(i).getId());				
-			}
-				
-			toRemoveToDos.deleteAllToDos();
-			
-			User updated = repo.save(toRemoveToDos);
-			return ResponseEntity.status(200).body(updated);
-		}
-		
-		return ResponseEntity.status(404)
-								.body("Couldnt find user with id = " + id + " to remove all ToDos.");
-	}
+//	@PutMapping("/user/{id}/empty")
+//	public ResponseEntity<?> deleteToDosForUser(@PathVariable int id) {
+//		
+//		Optional<User> found = repo.findById(id);
+//		
+//		if(found.isPresent()) {
+//			User toRemoveToDos = found.get();
+//			List<ToDo> toDosToClear = toRemoveToDos.getTodos();
+//			
+//			for(int i = 0; i < toDosToClear.size(); i++ ) {
+//				toDoRepo.deleteById(toDosToClear.get(i).getId());				
+//			}
+//				
+//			toRemoveToDos.deleteAllToDos();
+//			
+//			User updated = repo.save(toRemoveToDos);
+//			return ResponseEntity.status(200).body(updated);
+//		}
+//		
+//		return ResponseEntity.status(404)
+//								.body("Couldnt find user with id = " + id + " to remove all ToDos.");
+//	}
 	
 	/*
 	 *  API call to finish each Todo of a User [finished = true]
