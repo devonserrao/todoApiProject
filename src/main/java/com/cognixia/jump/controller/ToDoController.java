@@ -86,7 +86,10 @@ public class ToDoController {
 		
 	}
 	
-	// Update a todo's Due Date ---> Causing issues not working
+	/*
+	 *  API call to update a ToDo's dueDate
+	 *  	==> Need to put a Map object in RequestBody to push in Date
+	 */
 	@PatchMapping("/todo/duedate")
 	public ResponseEntity<?> updateDueDate(@RequestBody Map<String, String> data) {
 		

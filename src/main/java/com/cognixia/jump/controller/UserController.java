@@ -63,7 +63,9 @@ public class UserController {
 		// Issue with this Exception => Its showing the full stacktrace rather than just Error details!
 	}
 	
-	
+	/*
+	 *  API call to update Username of a User
+	 */
 	@PatchMapping("user/username")
 	public ResponseEntity<?> updateUsername(@PathParam(value = "id") int id, @PathParam(value = "username") String username) {
 		
@@ -81,7 +83,29 @@ public class UserController {
 
 	}
 	
+	/*
+	 *  API call to update Password of a User
+	 */
+	@PatchMapping("user/password")
+	public ResponseEntity<?> updatePassword(@PathParam(value = "id") int id, @PathParam(value = "password") String password) {
+		
+		Optional<User> found = repo.findById(id);
+		User toUpdate, updated;
+		
+		if(found.isPresent()) {
+			repo.updatePassword(id, password);
+			return ResponseEntity.status(200).body("User of id = " + id + " PASSWORD was updated!");
+			
+		}
+		else
+			return ResponseEntity.status(404)
+					.body("User with id = " + id + " couldnt be found to update the password!");
+
+	}
 	
+	/*
+	 *  API call to add a new User with potentially new ToDos
+	 */
 	@PostMapping("/user")
 	public ResponseEntity<?> addUser(@Valid @RequestBody User user) {
 		user.setId(-1);
@@ -100,7 +124,9 @@ public class UserController {
 		return ResponseEntity.status(201).body(added);
 	}
 	
-	// Returns list of Todos of User with id
+	/*
+	 *  API call to get the list of Todos of a User with id
+	 */
 	@GetMapping("/user/{id}/todos")
 	public ResponseEntity<?> getTodosOfUser(@PathVariable int id) {
 		Optional<User> found = repo.findById(id);
@@ -115,7 +141,9 @@ public class UserController {
 		
 	}
 	
-	// Adds a ToDo and links it to the User with id
+	/*
+	 *  API call to add a ToDo and link it to the User with id
+	 */
 	@PutMapping("/user/{id}/todo")
 	public ResponseEntity<?> addToDoForUser(@PathVariable int id, @RequestBody ToDo todo) {
 		
@@ -139,6 +167,9 @@ public class UserController {
 	/* 
 	 * Delete all todos for a single user
 	 * 			- Issue: Passes but doesnt actually delete from db!
+	 * 			- ###################################
+	 * 			  # May need to comment this out!!! #
+	 * 			  ###################################
 	 * */
 	@PutMapping("/user/{id}/empty")
 	public ResponseEntity<?> addToDoForUser(@PathVariable int id) {
@@ -163,7 +194,9 @@ public class UserController {
 								.body("Couldnt find user with id = " + id + " to remove all ToDos.");
 	}
 	
-	// Sets Finished = true for all todos with user_id = id
+	/*
+	 *  API call to finish each Todo of a User [finished = true]
+	 */
 	@PutMapping("/user/{id}/finish")
 	public ResponseEntity<?> finishAllToDoForUser(@PathVariable int id) {
 		
