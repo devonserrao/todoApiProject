@@ -140,6 +140,8 @@ public class UserController {
 	/*
 	 *  API call to get the list of Todos of a User with id
 	 */
+	@ApiOperation(value = "Retrieves the list of Todos of a User with ID",
+			notes = "Pass in User ID in the URL followed by /todos || If User with ID not found, will return ResourceNotFoundException")
 	@GetMapping("/user/{id}/todos")
 	public ResponseEntity<?> getTodosOfUser(@PathVariable int id) {
 		Optional<User> found = repo.findById(id);
@@ -157,6 +159,8 @@ public class UserController {
 	/*
 	 *  API call to add a ToDo and link it to the User with id
 	 */
+	@ApiOperation(value = "Adds a Todo and links it to a User with ID given",
+			notes = "Pass in User ID in the URL followed by /todo & a ToDo object in the Request Body || If User with ID not found, will return ResourceNotFoundException")
 	@PutMapping("/user/{id}/todo")
 	public ResponseEntity<?> addToDoForUser(@PathVariable int id, @RequestBody ToDo todo) {
 		
@@ -210,6 +214,8 @@ public class UserController {
 	/*
 	 *  API call to finish each Todo of a User [finished = true]
 	 */
+	@ApiOperation(value = "Completes every Todo linked to a User with ID",
+			notes = "Pass in User ID in the URL followed by /finish || If User with ID not found, will return ResourceNotFoundException")
 	@PutMapping("/user/{id}/finish")
 	public ResponseEntity<?> finishAllToDoForUser(@PathVariable int id) {
 		
