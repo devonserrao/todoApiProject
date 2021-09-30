@@ -24,6 +24,8 @@ import com.cognixia.jump.model.User;
 import com.cognixia.jump.repository.ToDoRepository;
 import com.cognixia.jump.repository.UserRepository;
 
+import io.swagger.annotations.ApiOperation;
+
 @RequestMapping("/api")
 @RestController
 public class UserController {
@@ -34,11 +36,14 @@ public class UserController {
 	@Autowired
 	ToDoRepository toDoRepo;
 	
+	@ApiOperation(value = "Returns a list of users from the database with all their details.")
 	@GetMapping("/user")
 	public List<User> getUsers() {
 		return repo.findAll();
 	}
 	
+	@ApiOperation(value = "Retrieves a User corresponding to an ID.",
+			notes = "Pass in User ID in the URL || If user with ID not found, will throw ResourceNotFoundException")
 	@GetMapping("/user/{id}")
 	public User getUser(@PathVariable int id) throws ResourceNotFoundException {
 		if(repo.existsById(id)) {
@@ -53,6 +58,8 @@ public class UserController {
 	/*
 	 *  API call to check if username and password combination are found in db!
 	 */
+	@ApiOperation(value = "Retrieves a User corresponding to username and password input.",
+			notes = "Pass in Username & Password in the URL path parameters || If username & password match not found, will throw UserLoginFailedException")
 	@GetMapping("/user/login")
 	public User loginUser(@PathParam(value = "username") String username, @PathParam(value = "password") String password) throws UserLoginFailedException {
 	
@@ -66,6 +73,8 @@ public class UserController {
 	/*
 	 *  API call to update Username of a User
 	 */
+	@ApiOperation(value = "Updates an existing User's username identified by input ID.",
+			notes = "Pass in Username and User ID in the URL path parameters || If user with ID not found, will throw ResourceNotFoundException")
 	@PatchMapping("user/username")
 	public ResponseEntity<?> updateUsername(@PathParam(value = "id") int id, @PathParam(value = "username") String username) {
 		
@@ -86,6 +95,8 @@ public class UserController {
 	/*
 	 *  API call to update Password of a User
 	 */
+	@ApiOperation(value = "Updates an existing User's password identified by input ID.",
+			notes = "Pass in Password and User ID in the URL path parameters || If user with ID not found, will throw ResourceNotFoundException")
 	@PatchMapping("user/password")
 	public ResponseEntity<?> updatePassword(@PathParam(value = "id") int id, @PathParam(value = "password") String password) {
 		
@@ -106,6 +117,8 @@ public class UserController {
 	/*
 	 *  API call to add a new User with potentially new ToDos
 	 */
+	@ApiOperation(value = "Creates a new User with potentially new todos on creation of User.",
+			notes = "Pass in User object in the Request Body. || Will ensure all todos entered are created as well.")
 	@PostMapping("/user")
 	public ResponseEntity<?> addUser(@Valid @RequestBody User user) {
 		user.setId(-1);
