@@ -19,6 +19,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.cognixia.jump.exception.ResourceNotFoundException;
+import com.cognixia.jump.exception.UserLoginFailedException;
 import com.cognixia.jump.model.ToDo;
 import com.cognixia.jump.model.User;
 
@@ -89,4 +90,46 @@ private final String STARTING_URI = "http://localhost:8080/api";
 				.andExpect( status().isNotFound() );
 		
 	}
+	
+	@Test
+	void testLoginUser() throws Exception {
+		
+		String validUsername = "darren@gmail.com";
+		String validPassword = "test123";
+		
+		String uri = STARTING_URI + "/user/login?username=" + validUsername + "&password=" + validPassword;
+		
+		User userFound = new User(2, "Darren", "darren@gmail.com", "test123", new ArrayList<ToDo>() );
+		
+		when(controller.loginUser(validUsername, validPassword)).thenReturn(userFound);
+		
+		mockMvc.perform( get(uri) )
+				.andDo( print() )
+				.andExpect( status().isOk() )
+				.andExpect( jsonPath("$.id").value(userFound.getId()) )
+				.andExpect( jsonPath("$.name").value(userFound.getName()) )
+				.andExpect( jsonPath("$.username").value(userFound.getUsername()) )
+				.andExpect( jsonPath("$.password").value(userFound.getPassword()) )
+				.andExpect( jsonPath("$.todos").value(userFound.getTodos()) );
+		
+	}
+	
+	@Test 
+	void testLoginInvalidUser() throws Exception {
+		
+		String invalidUsername = "invalid_user12@gmail.com";
+		String invalidPassword = "sdmam0212837";
+		
+		String uri = STARTING_URI + "/user/login?username=" + invalidUsername + "&password=" + invalidPassword;
+		
+		when(controller.loginUser(invalidUsername, invalidPassword))
+				.thenThrow(new UserLoginFailedException("No user found with username = " + invalidUsername + " and password = " + invalidPassword + "."));
+		
+		mockMvc.perform( get(uri) )
+				.andDo( print() )
+				.andExpect( status().isNotFound() );
+		
+	}
+	
+
 }
