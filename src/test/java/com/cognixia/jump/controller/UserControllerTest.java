@@ -18,6 +18,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
+import com.cognixia.jump.exception.ResourceNotFoundException;
 import com.cognixia.jump.model.ToDo;
 import com.cognixia.jump.model.User;
 
@@ -56,8 +57,8 @@ private final String STARTING_URI = "http://localhost:8080/api";
 	@Test
 	void testGetUser() throws Exception {
 		
-		String uri = STARTING_URI + "/user/{id}";
 		int id = 2;
+		String uri = STARTING_URI + "/user/{id}";
 		
 		User userFound = new User(2, "Darren", "darren@gmail.com", "test123", new ArrayList<ToDo>() );
 		
@@ -72,6 +73,20 @@ private final String STARTING_URI = "http://localhost:8080/api";
 				.andExpect( jsonPath("$.password").value(userFound.getPassword()) )
 				.andExpect( jsonPath("$.todos").value(userFound.getTodos()) );
 		
+	}
+	
+	@Test
+	void testGetUserNotFound() throws Exception {
+		
+		int id = 1000;
+		String uri = STARTING_URI + "/user/{id}";
+		
+		when(controller.getUser(id))
+				.thenThrow(new ResourceNotFoundException("User with id = " + id + " not found."));
+		
+		mockMvc.perform( get(uri, id) )
+				.andDo( print() )
+				.andExpect( status().isNotFound() );
 		
 	}
 }
