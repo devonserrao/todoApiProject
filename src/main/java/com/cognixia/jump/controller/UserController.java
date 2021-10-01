@@ -67,7 +67,6 @@ public class UserController {
 			return repo.loginUser(username, password);
 		
 		throw new UserLoginFailedException("No user found with username = " + username + " and password = " + password + ".");
-		// Issue with this Exception => Its showing the full stacktrace rather than just Error details!
 	}
 	
 	/*
