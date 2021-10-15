@@ -60,6 +60,7 @@ public class ToDoController {
 	}
 	
 	// Add a todo and link to a User id -> cant input user id this way
+	@ApiOperation(value = "Add a todo and link it to a User. Must provide ID of User within the ToDo object")
 	@PostMapping("/todo")
 	public ResponseEntity<?> addToDo(@RequestBody ToDo todo) {
 		todo.setId(-1);
@@ -71,6 +72,8 @@ public class ToDoController {
 	
 	
 	// Update a todo to completed [finished = true]
+	@ApiOperation(value = "Updates a todo's completed field to True to denote completion of Todo task.",
+						notes = "Must provide ID of User within the ToDo object")
 	@PatchMapping("/todo/finished/{id}")
 	public ResponseEntity<?> updateToDo(@PathVariable int id) {
 		
