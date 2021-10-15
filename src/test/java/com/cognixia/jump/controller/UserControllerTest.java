@@ -5,11 +5,13 @@ import java.util.List;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import org.junit.jupiter.api.Test;
@@ -158,6 +160,25 @@ private final String STARTING_URI = "http://localhost:8080/api";
 //				.andExpect( status().isCreated() )
 //				.andExpect( content().contentType(MediaType.APPLICATION_JSON_VALUE) );	
 //
+//	}
+	
+	// TODO Produces assertionError - > returns 400 instead of 200.
+//	@Test
+//	void testAddToDoForUser() throws Exception {
+//		
+//		int id = 1;
+//		String uri = STARTING_URI + "/user/{id}/todo";
+//		
+//		User updatedUserWithAddedToDo = new User(1, "Devon Serrao", "devon@gmail.com", "ToastisGood", new ArrayList<ToDo>() );
+//		ToDo toDoToAppend = new ToDo(-1, "Test Description", false);
+//		
+//				
+//		when(controller.addToDoForUser(id, toDoToAppend)).thenReturn(updatedUserWithAddedToDo);
+//		
+//		mockMvc.perform( put(uri, id) )
+//				.andDo(print())
+//				.andExpect( status().isOk());
+//		
 //	}
 
 	
