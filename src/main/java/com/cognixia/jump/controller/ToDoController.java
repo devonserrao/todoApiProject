@@ -22,6 +22,8 @@ import com.cognixia.jump.model.ToDo;
 import com.cognixia.jump.model.User;
 import com.cognixia.jump.repository.ToDoRepository;
 
+import io.swagger.annotations.ApiOperation;
+
 @RequestMapping("/api")
 @RestController
 public class ToDoController {
@@ -34,7 +36,8 @@ public class ToDoController {
 		return repo.findAll();
 	}
 	
-	// Deletes the ToDo with id
+	@ApiOperation(value = "Deletes a todo from the database. Must provide ID of todo in the URI",
+					notes = " Since Cascade is active, will delete todo from the User todos list as well.")
 	@DeleteMapping("/todo/{id}")
 	public ResponseEntity<?> deleteToDo(@PathVariable int id) {
 		ToDo deleted = new ToDo();
