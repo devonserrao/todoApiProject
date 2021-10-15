@@ -161,7 +161,7 @@ public class UserController {
 	@ApiOperation(value = "Adds a Todo and links it to a User with ID given",
 			notes = "Pass in User ID in the URL followed by /todo & a ToDo object in the Request Body || If User with ID not found, will return ResourceNotFoundException")
 	@PutMapping("/user/{id}/todo")
-	public ResponseEntity<?> addToDoForUser(@PathVariable int id, @RequestBody ToDo todo) {
+	public User addToDoForUser(@PathVariable int id, @RequestBody ToDo todo) throws ResourceNotFoundException {
 		
 		todo.setId(-1);
 		ToDo addedToDo = toDoRepo.save(todo);
@@ -173,11 +173,10 @@ public class UserController {
 			toUpdate.addTodo(addedToDo);
 			
 			User updated = repo.save(toUpdate);
-			return ResponseEntity.status(200).body(updated);
+			return updated;
 		}
 		
-		return ResponseEntity.status(404)
-								.body("Couldnt find user with id = " + id + " to add a ToDo for.");
+		throw new ResourceNotFoundException("User with id = " + id + " not found to UPDATE!.");
 	}
 	
 	/* 
