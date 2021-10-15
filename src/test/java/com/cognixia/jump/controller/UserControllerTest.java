@@ -4,17 +4,21 @@ import java.util.List;
 
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -131,5 +135,30 @@ private final String STARTING_URI = "http://localhost:8080/api";
 		
 	}
 	
+//	@Test
+//	void testCreateUser() throws Exception {
+//		
+//		String uri = STARTING_URI + "/user";
+//		
+//		User userToCreateTest = new User(-1, "TESTING USER", "TESTING EMAIL", "TESTPassword!223", new ArrayList<ToDo>() );
+//		
+//		when( controller.addUser( Mockito.any(User.class) )).thenReturn(userToCreateTest);
+//		
+//		String userJson = "{\"id\" : " + userToCreateTest.getId() 
+//				+ ", \"name\" : \"" + userToCreateTest.getName() 
+//				+ "\"" + ", \"username\" : \"" + userToCreateTest.getUsername() 
+//				+ "\"" + ", \"password\" : \"" + userToCreateTest.getPassword()
+//				+ "\"" + ", \"todos\" : " + userToCreateTest.getTodos()
+//			    + "}";;
+//				
+//		mockMvc.perform( post(uri)
+//							.content( userJson )
+//							.contentType(MediaType.APPLICATION_JSON_VALUE) )
+//				.andDo(print())
+//				.andExpect( status().isCreated() )
+//				.andExpect( content().contentType(MediaType.APPLICATION_JSON_VALUE) );	
+//
+//	}
 
+	
 }

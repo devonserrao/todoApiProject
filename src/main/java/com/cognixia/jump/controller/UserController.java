@@ -119,7 +119,7 @@ public class UserController {
 	@ApiOperation(value = "Creates a new User with potentially new todos on creation of User.",
 			notes = "Pass in User object in the Request Body. || Will ensure all todos entered are created as well.")
 	@PostMapping("/user")
-	public User addUser(@Valid @RequestBody User user) {
+	public ResponseEntity<?> addUser(@Valid @RequestBody User user) {
 		user.setId(-1);
 		
 		// Ensure each ToDo attached to the new User 
@@ -133,7 +133,7 @@ public class UserController {
 		}
 		
 		User added = repo.save(user);
-		return added;
+		return ResponseEntity.status(201).body(added);
 	}
 	
 	/*
