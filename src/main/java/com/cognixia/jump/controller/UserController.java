@@ -75,19 +75,19 @@ public class UserController {
 	@ApiOperation(value = "Updates an existing User's username identified by input ID.",
 			notes = "Pass in Username and User ID in the URL path parameters || If user with ID not found, will throw ResourceNotFoundException")
 	@PatchMapping("user/username")
-	public ResponseEntity<?> updateUsername(@PathParam(value = "id") int id, @PathParam(value = "username") String username) {
+	public User updateUsername(@PathParam(value = "id") int id, @PathParam(value = "username") String username) throws ResourceNotFoundException{
 		
 		Optional<User> found = repo.findById(id);
 		User toUpdate, updated;
 		
 		if(found.isPresent()) {
 			repo.updateUsername(id, username);
-			return ResponseEntity.status(200).body("User of id = " + id + " USERNAME was updated!");
+			updated = repo.getById(id);
+			return updated;
 			
 		}
-		else
-			return ResponseEntity.status(404)
-					.body("User with id = " + id + " couldnt be found to update the username!");
+		
+		throw new ResourceNotFoundException("User with id = " + id + " couldnt be found to update the username!");
 
 	}
 	
