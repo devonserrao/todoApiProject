@@ -4,6 +4,7 @@ import java.util.List;
 
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -137,6 +138,9 @@ private final String STARTING_URI = "http://localhost:8080/api";
 		
 	}
 	
+	
+	
+// TODO	
 //	@Test
 //	void testCreateUser() throws Exception {
 //		
@@ -181,5 +185,21 @@ private final String STARTING_URI = "http://localhost:8080/api";
 //		
 //	}
 
+	@Test
+	void testUpdateUsername() throws Exception {
+		
+		int id = 1;
+		String usernameChanged = "devon123TEST@gmail.com";
+		
+		String uri = STARTING_URI + "/user/username?id=" + id + "&username=" + usernameChanged;
+
+		User updatedUser = new User(1, "Devon Serrao", "devon123TEST@gmail.com", "ToastisGood", new ArrayList<ToDo>() );
+		
+		when(controller.updateUsername(id, usernameChanged)).thenReturn(updatedUser);
+		
+		mockMvc.perform( patch(uri) )
+				.andDo( print() )
+				.andExpect( status().isOk() );
+	}
 	
 }
