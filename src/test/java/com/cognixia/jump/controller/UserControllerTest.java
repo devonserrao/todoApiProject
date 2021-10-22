@@ -251,4 +251,19 @@ private final String STARTING_URI = "http://localhost:8080/api";
 				.andDo( print() )
 				.andExpect( status().isNotFound() );
 	}
+	
+	@Test
+	void testGetTodosOfUser() throws Exception {
+		
+		int id = 1;
+		List<ToDo> todosReturned = new ArrayList<ToDo>();
+		String uri = STARTING_URI + "/user/{id}/todos";
+		
+		when(controller.getTodosOfUser(id)).thenReturn(todosReturned);
+		
+		mockMvc.perform( get(uri) )
+				.andDo( print() )
+				.andExpect( status().isOk() );
+		
+	}
 }
