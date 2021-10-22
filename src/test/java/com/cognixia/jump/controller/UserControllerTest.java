@@ -235,4 +235,20 @@ private final String STARTING_URI = "http://localhost:8080/api";
 				.andDo( print() )
 				.andExpect( status().isNotFound() );
 	}
+	
+	@Test
+	void testUpdatePasswordIdNotFound() throws Exception {
+		
+		int id = 2000;
+		String passwordToChange = "FAKE_ID_2000";
+		
+		String uri = STARTING_URI + "/user/password?id=" + id + "&password=" + passwordToChange;
+		
+		when(controller.updatePassword(id, passwordToChange))
+			.thenThrow(new ResourceNotFoundException("User with id = " + id + " couldnt be found to update the password!"));
+	
+		mockMvc.perform( patch(uri) )
+				.andDo( print() )
+				.andExpect( status().isNotFound() );
+	}
 }
