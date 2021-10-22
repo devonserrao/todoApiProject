@@ -202,4 +202,21 @@ private final String STARTING_URI = "http://localhost:8080/api";
 				.andExpect( status().isOk() );
 	}
 	
+	@Test
+	void testUpdatePassword() throws Exception {
+		
+		int id = 1;
+		String passwordChanged = "BreadIsNOTGOOD";
+		
+		String uri = STARTING_URI + "/user/password?id=" + id + "&password=" + passwordChanged;
+
+		User updatedUser = new User(1, "Devon Serrao", "devon123TEST@gmail.com", "BreadIsNOTGOOD", new ArrayList<ToDo>() );
+		
+		when(controller.updateUsername(id, passwordChanged)).thenReturn(updatedUser);
+		
+		mockMvc.perform( patch(uri) )
+				.andDo( print() )
+				.andExpect( status().isOk() );
+	}
+	
 }
