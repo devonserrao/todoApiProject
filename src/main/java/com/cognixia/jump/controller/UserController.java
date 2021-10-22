@@ -141,16 +141,16 @@ public class UserController {
 	@ApiOperation(value = "Retrieves the list of Todos of a User with ID",
 			notes = "Pass in User ID in the URL followed by /todos || If User with ID not found, will return ResourceNotFoundException")
 	@GetMapping("/user/{id}/todos")
-	public ResponseEntity<?> getTodosOfUser(@PathVariable int id) {
+	public List<ToDo> getTodosOfUser(@PathVariable int id) throws ResourceNotFoundException {
 		Optional<User> found = repo.findById(id);
 		List<ToDo> todosOfUser;
 		
 		if(found.isPresent()) {
 			todosOfUser = found.get().getTodos();
-			return ResponseEntity.status(200).body(todosOfUser);
+			return todosOfUser;
 		}
 		
-		return ResponseEntity.status(404).body("User not found with id = " + id);
+		throw new ResourceNotFoundException("User with id = " + id + " was not found in DB to retrieve their todos!");
 		
 	}
 	
