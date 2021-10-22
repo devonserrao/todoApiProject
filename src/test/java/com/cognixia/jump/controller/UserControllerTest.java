@@ -219,4 +219,20 @@ private final String STARTING_URI = "http://localhost:8080/api";
 				.andExpect( status().isOk() );
 	}
 	
+	
+	@Test
+	void testUpdateUsernameIdNotFound() throws Exception {
+		
+		int id = 2000;
+		String usernameToChange = "fakeIDGivenUsername";
+		
+		String uri = STARTING_URI + "/user/username?id=" + id + "&username=" + usernameToChange;
+		
+		when(controller.updateUsername(id, usernameToChange))
+			.thenThrow(new ResourceNotFoundException("User with id = " + id + " couldnt be found to update the username!"));
+	
+		mockMvc.perform( patch(uri) )
+				.andDo( print() )
+				.andExpect( status().isNotFound() );
+	}
 }
