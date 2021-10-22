@@ -97,20 +97,19 @@ public class UserController {
 	@ApiOperation(value = "Updates an existing User's password identified by input ID.",
 			notes = "Pass in Password and User ID in the URL path parameters || If user with ID not found, will throw ResourceNotFoundException")
 	@PatchMapping("user/password")
-	public ResponseEntity<?> updatePassword(@PathParam(value = "id") int id, @PathParam(value = "password") String password) {
+	public User updatePassword(@PathParam(value = "id") int id, @PathParam(value = "password") String password) throws ResourceNotFoundException {
 		
 		Optional<User> found = repo.findById(id);
 		User toUpdate, updated;
 		
 		if(found.isPresent()) {
 			repo.updatePassword(id, password);
-			return ResponseEntity.status(200).body("User of id = " + id + " PASSWORD was updated!");
+			updated = repo.getById(id);
+			return updated;
 			
 		}
-		else
-			return ResponseEntity.status(404)
-					.body("User with id = " + id + " couldnt be found to update the password!");
-
+		
+		throw new ResourceNotFoundException("User with id = " + id + " couldnt be found to update the password!");
 	}
 	
 	/*
